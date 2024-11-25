@@ -4,10 +4,24 @@ import numpy as np
 import pandas as pd
 from kn_base import get_knowledge
 import datetime
+from datetime import datetime
 import os
 import dropbox
 from dotenv import load_dotenv
 import gdown
+import pytz
+
+
+# Set the timezone (for example, IST)
+india_timezone = pytz.timezone('Asia/Kolkata')
+
+# Get the current time in UTC and convert it to IST
+current_time_utc = datetime.now(pytz.utc)
+current_time_local = current_time_utc.astimezone(india_timezone)
+
+# Extract date and timestamp separately
+formatted_date = current_time_local.strftime('%Y-%m-%d')  # YYYY-MM-DD format
+formatted_time = current_time_local.strftime('%H:%M:%S')  # HH:MM:SS format
 
 # Load environment variables from .env file
 load_dotenv()
@@ -38,8 +52,8 @@ def save_to_csv_and_dropbox(rating , feedback, user_name, user_email):
         "Email": user_email,
         "Rating" : rating,
         "Feedback": feedback,
-        "Date" : datetime.date.today(),
-        "Timestamp": datetime.datetime.now().strftime('%H:%M:%S')
+        "Date" : formatted_date,
+        "Timestamp": formatted_time
     }
 
     # Save feedback to a local CSV file
@@ -65,8 +79,8 @@ def save_to_csv_and_dropbox_msg(message, user_name, user_email):
         "Name": user_name,
         "Email": user_email,
         "Message": message,
-        "Date" : datetime.date.today(),
-        "Timestamp": datetime.datetime.now().strftime('%H:%M:%S')
+        "Date" : formatted_date,
+        "Timestamp": formatted_time
     }
 
     # Save feedback to a local CSV file
@@ -187,7 +201,7 @@ elif app_mode == "Contact":
             st.success(message)
             
             # Show the submission date and time
-            st.write(f"Message submitted on {datetime.date.today()} at {datetime.datetime.now().strftime('%H:%M:%S')}")
+            st.write(f"Message submitted on {formatted_date} at {formatted_time}")
         else:
             st.error("Please provide your message or any query before submitting.")
 
@@ -253,7 +267,7 @@ elif app_mode == "Disease Recognition":
                 st.success(feedback)
                 
                 # Show the submission date and time
-                st.write(f"Feedback submitted on {datetime.date.today()} at {datetime.datetime.now().strftime('%H:%M:%S')}")
+                st.write(f"Feedback submitted on {formatted_date} at {formatted_time}")
             else:
                 st.error("Please provide your feedback before submitting.")
 
