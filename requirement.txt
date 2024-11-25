@@ -1,0 +1,7 @@
+tensorflow==2.18.0
+dropbox==12.0.2
+numpy==1.26.4
+pandas==2.1.3
+streamlit==1.40.1
+python-dotenv==1.0.1
+gdown==5.2.0
